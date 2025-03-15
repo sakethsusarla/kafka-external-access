@@ -1,0 +1,40 @@
+controller:
+  replicaCount: 3
+  automountServiceAccountToken: true
+
+rbac:
+  create: true
+
+externalAccess:
+  enabled: true
+  autoDiscovery:
+    enabled: true
+  controller:
+    service:
+      type: NodePort
+      domain: "127.0.0.1"
+      nodePorts:
+        - 30000
+        - 30001
+        - 30002
+
+listeners:
+  client:
+    protocol: PLAINTEXT
+  controller:
+    protocol: PLAINTEXT
+  interbroker:
+    protocol: PLAINTEXT
+  external:
+    protocol: SSL
+    sslClientAuth: "required"
+
+tls:
+  type: "JKS"
+  existingSecret: "kafka-mtls"
+  passwordSecret: "kafka-mtls"
+  passwordsSecretKeystoreKey: "keystorePassword"
+  passwordsSecretTruststoreKey: "truststorePassword"
+  keystorePassword: "secret"
+  truststorePassword: "secret"
+  sslClientAuth: "required"
